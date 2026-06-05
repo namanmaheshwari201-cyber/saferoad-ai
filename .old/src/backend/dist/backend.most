@@ -1,0 +1,209 @@
+// Version: 1.0.0
+type ChatMessage__559859432 =
+  {content : Text; role : Text; timestamp : Timestamp__301639476};
+type ChatSessionInternal__1064865856 =
+  {
+    createdAt : Timestamp__301639476;
+    var messages : [ChatMessage__559859432];
+    sessionId : Nat;
+    var updatedAt : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type Complaint__979997601 =
+  {
+    aiAnalysisResult : Text;
+    aiSeverity : Text;
+    assignedAuthority : Text;
+    citizenVerification : Text;
+    complaintId : Text;
+    complaintType : Text;
+    createdAt : Timestamp__301639476;
+    description : Text;
+    locationAddress : Text;
+    locationLat : Float;
+    locationLng : Float;
+    photoUrl : Text;
+    status : Text;
+    updatedAt : Timestamp__301639476;
+    userId : UserId__158757552;
+    verificationPhotoUrl : Text
+  };
+type Contractor__144506952 =
+  {
+    complaintScore : Float;
+    contractorId : Nat;
+    name : Text;
+    overallScore : Float;
+    projectsCompleted : Nat;
+    qualityScore : Float;
+    state : Text;
+    status : Text;
+    timelineScore : Float
+  };
+type Data__80296667<K, V> =
+  {var count : Nat__1040412405; kvs : [var ?(K, V)]};
+type DriverSafetyScore__707316565 =
+  {
+    answers : Text;
+    assessedAt : Timestamp__301639476;
+    score : Nat;
+    userId : UserId__158757552
+  };
+type EmergencyProfile__1070974544 =
+  {
+    additionalNotes : Text;
+    allergies : Text;
+    bloodGroup : Text;
+    emergencyContact1Name : Text;
+    emergencyContact1Phone : Text;
+    emergencyContact2Name : Text;
+    emergencyContact2Phone : Text;
+    insuranceProvider : Text;
+    medicalConditions : Text;
+    policyNumber : Text;
+    principal : UserId__158757552;
+    updatedAt : Timestamp__301639476
+  };
+type Internal__41346355<K, V> =
+  {children : [var ?Node__1000929467<K, V>]; data : Data__80296667<K, V>};
+type Leaf__712614010<K, V> = {data : Data__80296667<K, V>};
+type LegalUpdate__534896835 =
+  {
+    publishedAt : Timestamp__301639476;
+    sourceUrl : Text;
+    state : Text;
+    summary : Text;
+    title : Text;
+    topic : Text;
+    updateId : Nat
+  };
+type Map__222667396<K, V> = Map__912772452<K, V>;
+type Map__709709801<K, V> =
+  {var root : Node__1000929467<K, V>; var size : Nat__1040412405};
+type Map__912772452<K, V> = Map__709709801<K, V>;
+type Nat__1040412405 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__1000929467<K, V> =
+  {#internal : Internal__41346355<K, V>; #leaf : Leaf__712614010<K, V>};
+type RescueService__378656164 =
+  {
+    address : Text;
+    city : Text;
+    isAvailable247 : Bool;
+    name : Text;
+    phone : Text;
+    rating : Float;
+    serviceId : Nat;
+    serviceType : Text;
+    state : Text
+  };
+type RoadProject__263699494 =
+  {
+    completionPercent : Float;
+    contractorName : Text;
+    lastUpdated : Timestamp__301639476;
+    location : Text;
+    name : Text;
+    projectId : Nat;
+    releasedBudget : Float;
+    state : Text;
+    totalBudget : Float;
+    utilizedBudget : Float
+  };
+type RoadRating__442020239 =
+  {
+    city : Text;
+    id : Text;
+    rating : Nat;
+    review : Text;
+    roadName : Text;
+    submitter : Text;
+    timestamp : Int
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__1009003526 =
+  {
+    city : Text;
+    createdAt : Timestamp__301639476;
+    language : Text;
+    name : Text;
+    phone : Text;
+    principal : UserId__158757552;
+    state : Text;
+    updatedAt : Timestamp__301639476
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__222667396<Principal, UserRole__1073662873>
+    };
+  stable chatSessions :
+    {
+      var root : Node__1000929467<Nat, ChatSessionInternal__1064865856>;
+      var size : Nat__1040412405
+    };
+  stable chatState : {var nextSessionId : Nat};
+  stable complaintState : {var nextComplaintSeq : Nat};
+  stable complaints :
+    {
+      var root : Node__1000929467<Text, Complaint__979997601>;
+      var size : Nat__1040412405
+    };
+  stable driverScores :
+    {
+      var root :
+        Node__1000929467<UserId__158757552, DriverSafetyScore__707316565>;
+      var size : Nat__1040412405
+    };
+  stable emergencyProfiles :
+    {
+      var root :
+        Node__1000929467<UserId__158757552, EmergencyProfile__1070974544>;
+      var size : Nat__1040412405
+    };
+  stable legalUpdates :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?LegalUpdate__534896835]];
+      var elementIndex : Nat__1040412405
+    };
+  stable profiles :
+    {
+      var root : Node__1000929467<UserId__158757552, UserProfile__1009003526>;
+      var size : Nat__1040412405
+    };
+  stable ratingSeq : {var next : Nat};
+  stable rescueServices :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?RescueService__378656164]];
+      var elementIndex : Nat__1040412405
+    };
+  stable rescueState : {var nextServiceId : Nat};
+  stable roadContractors :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?Contractor__144506952]];
+      var elementIndex : Nat__1040412405
+    };
+  stable roadProjects :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?RoadProject__263699494]];
+      var elementIndex : Nat__1040412405
+    };
+  stable roadRatings :
+    {
+      var root : Node__1000929467<Text, RoadRating__442020239>;
+      var size : Nat__1040412405
+    };
+  stable roadwatchState :
+    {
+      var nextContractorId : Nat;
+      var nextProjectId : Nat;
+      var nextUpdateId : Nat
+    }
+};

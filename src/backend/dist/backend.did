@@ -1,0 +1,199 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfileInput = 
+ record {
+   city: text;
+   language: text;
+   name: text;
+   phone: text;
+   state: text;
+ };
+type UserProfile = 
+ record {
+   city: text;
+   createdAt: Timestamp;
+   language: text;
+   name: text;
+   phone: text;
+   "principal": UserId;
+   state: text;
+   updatedAt: Timestamp;
+ };
+type UserId = principal;
+type Timestamp = int;
+type RoadRating = 
+ record {
+   city: text;
+   id: text;
+   rating: nat;
+   review: text;
+   roadName: text;
+   submitter: text;
+   timestamp: int;
+ };
+type RoadProject = 
+ record {
+   completionPercent: float64;
+   contractorName: text;
+   lastUpdated: Timestamp;
+   location: text;
+   name: text;
+   projectId: nat;
+   releasedBudget: float64;
+   state: text;
+   totalBudget: float64;
+   utilizedBudget: float64;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: RoadRating;
+ };
+type RescueService = 
+ record {
+   address: text;
+   city: text;
+   isAvailable247: bool;
+   name: text;
+   phone: text;
+   rating: float64;
+   serviceId: nat;
+   serviceType: text;
+   state: text;
+ };
+type LegalUpdate = 
+ record {
+   publishedAt: Timestamp;
+   sourceUrl: text;
+   state: text;
+   summary: text;
+   title: text;
+   topic: text;
+   updateId: nat;
+ };
+type EmergencyProfileInput = 
+ record {
+   additionalNotes: text;
+   allergies: text;
+   bloodGroup: text;
+   emergencyContact1Name: text;
+   emergencyContact1Phone: text;
+   emergencyContact2Name: text;
+   emergencyContact2Phone: text;
+   insuranceProvider: text;
+   medicalConditions: text;
+   policyNumber: text;
+ };
+type EmergencyProfile = 
+ record {
+   additionalNotes: text;
+   allergies: text;
+   bloodGroup: text;
+   emergencyContact1Name: text;
+   emergencyContact1Phone: text;
+   emergencyContact2Name: text;
+   emergencyContact2Phone: text;
+   insuranceProvider: text;
+   medicalConditions: text;
+   policyNumber: text;
+   "principal": UserId;
+   updatedAt: Timestamp;
+ };
+type DriverSafetyScore = 
+ record {
+   answers: text;
+   assessedAt: Timestamp;
+   score: nat;
+   userId: UserId;
+ };
+type Contractor = 
+ record {
+   complaintScore: float64;
+   contractorId: nat;
+   name: text;
+   overallScore: float64;
+   projectsCompleted: nat;
+   qualityScore: float64;
+   state: text;
+   status: text;
+   timelineScore: float64;
+ };
+type ComplaintInput = 
+ record {
+   complaintType: text;
+   description: text;
+   locationAddress: text;
+   locationLat: float64;
+   locationLng: float64;
+   photoUrl: text;
+ };
+type Complaint = 
+ record {
+   aiAnalysisResult: text;
+   aiSeverity: text;
+   assignedAuthority: text;
+   citizenVerification: text;
+   complaintId: text;
+   complaintType: text;
+   createdAt: Timestamp;
+   description: text;
+   locationAddress: text;
+   locationLat: float64;
+   locationLng: float64;
+   photoUrl: text;
+   status: text;
+   updatedAt: Timestamp;
+   userId: UserId;
+   verificationPhotoUrl: text;
+ };
+type ChatSession = 
+ record {
+   createdAt: Timestamp;
+   messages: vec ChatMessage;
+   sessionId: nat;
+   updatedAt: Timestamp;
+   userId: UserId;
+ };
+type ChatMessage = 
+ record {
+   content: text;
+   role: text;
+   timestamp: Timestamp;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addMessageToSession: (sessionId: nat, role: text, content: text) -> (bool);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createChatSession: () -> (nat);
+  deleteChatSession: (sessionId: nat) -> (bool);
+  getAllComplaints: () -> (vec Complaint) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getChatSession: (sessionId: nat) -> (opt ChatSession);
+  getChatSessions: () -> (vec ChatSession);
+  getCityRoads: (city: text) -> (vec text) query;
+  getComplaint: (complaintId: text) -> (opt Complaint) query;
+  getContractors: (state: text) -> (vec Contractor) query;
+  getDriverSafetyScore: () -> (opt DriverSafetyScore);
+  getEmergencyProfile: () -> (opt EmergencyProfile);
+  getLegalUpdates: (state: text, topic: text) -> (vec LegalUpdate) query;
+  getRatingsForRoad: (city: text, roadName: text) -> (vec RoadRating) query;
+  getRescueServices: (serviceType: text, city: text) ->
+   (vec RescueService) query;
+  getRoadProjects: (state: text) -> (vec RoadProject) query;
+  getUserComplaints: () -> (vec Complaint);
+  getUserProfile: () -> (opt UserProfile);
+  healthCheck: () -> (text) query;
+  isCallerAdmin: () -> (bool) query;
+  saveDriverSafetyScore: (score: nat, answers: text) -> (bool);
+  submitComplaint: (input: ComplaintInput) -> (text);
+  submitRoadRating: (city: text, roadName: text, rating: nat, review:
+   text) -> (Result);
+  updateComplaintVerification: (complaintId: text, verification: text,
+   photoUrl: text) -> (bool);
+  upsertEmergencyProfile: (input: EmergencyProfileInput) -> (bool);
+  upsertUserProfile: (input: UserProfileInput) -> (bool);
+}

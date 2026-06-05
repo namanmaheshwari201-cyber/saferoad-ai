@@ -1,0 +1,24 @@
+{
+  "overview": "RoadGuardian AI is an AI-powered road safety and infrastructure transparency platform for India combining traffic law assistance, road monitoring, emergency response, and safety analytics.",
+  "features": [
+    "AI traffic law chatbot with challan fine calculator",
+    "Road damage detection and complaint routing",
+    "One-tap emergency SOS with accident detection",
+    "Safety analytics with city leaderboards and heatmaps",
+    "AI Blackspot Detector and Road Safety Digital Twin",
+    "Night Safety Score and Safe Route Navigator",
+    "School Zone Protection and Community Hazard Network",
+    "Road Quality Crowdsourcing and National City Safety Leaderboard"
+  ],
+  "category": "safety-platform",
+  "tags": [
+    "road-safety",
+    "india",
+    "ai",
+    "emergency",
+    "infrastructure",
+    "transparency",
+    "government"
+  ],
+  "last_updated": "2026-06-01T05:36:47.776Z"
+}
